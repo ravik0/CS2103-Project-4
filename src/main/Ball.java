@@ -34,6 +34,10 @@ public class Ball {
 	public Circle getCircle () {
 		return circle;
 	}
+	
+	public Rectangle getBoundingBox() {
+		return new Rectangle((int)(x-BALL_RADIUS),(int)(y-BALL_RADIUS),BALL_RADIUS*2,BALL_RADIUS*2);
+	}
 
 	/**
 	 * Constructs a new Ball object at the centroid of the game board
@@ -57,12 +61,20 @@ public class Ball {
 	 * @param deltaNanoTime the number of nanoseconds that have transpired since the last update
 	 */
 	public void updatePosition (long deltaNanoTime) {
-		double dx = vx * deltaNanoTime;
-		double dy = vy * deltaNanoTime;
+		final double dx = vx * deltaNanoTime;
+		final double dy = vy * deltaNanoTime;
 		x += dx;
 		y += dy;
 
 		circle.setTranslateX(x - (circle.getLayoutX() + BALL_RADIUS));
 		circle.setTranslateY(y - (circle.getLayoutY() + BALL_RADIUS));
+	}
+	
+	public void negateX() {
+		vx*=-1;
+	}
+	
+	public void negateY() {
+		vy*=-1;
 	}
 }

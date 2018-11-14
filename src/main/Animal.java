@@ -1,7 +1,7 @@
 package main;
 
 /**
- * Class containing the functionality for all the animal enemies in the game
+ * Class containing the functionality for all the animal enemies in the game 
  * @author Ravi
  *
  */

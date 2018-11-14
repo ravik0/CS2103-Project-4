@@ -84,8 +84,6 @@ public class GameImpl extends Pane implements Game {
 				run();
 			}
 		});
-
-		// Add another event handler to steer paddle...
 	}
 
 	/**
@@ -104,6 +102,13 @@ public class GameImpl extends Pane implements Game {
 						// Restart the game, with a message that depends on whether
 						// the user won or lost the game.
 						restartGame(state);
+					}
+					else {
+						setOnMouseMoved(new EventHandler<MouseEvent> () {
+							public void handle(MouseEvent e) {
+								paddle.moveTo(e.getSceneX(), e.getSceneY());
+							}	
+						});
 					}
 				}
 				// Keep track of how much time actually transpired since the last clock-tick.
