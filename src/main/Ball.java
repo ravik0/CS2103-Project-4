@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

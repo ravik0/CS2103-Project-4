@@ -1,3 +1,5 @@
+package main;
+
 import javafx.scene.layout.*;
 /**
  * Interface for a game that fits into a Pane.

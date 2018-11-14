@@ -1,3 +1,5 @@
+package main;
+
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.animation.AnimationTimer;
