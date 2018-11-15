@@ -31,12 +31,8 @@ public class GameImpl extends Pane implements Game {
 	// Instance variables
 	private Ball _ball;
 	private Paddle _paddle;
+	private boolean _canMove;
 	private List<Animal> _enemies;
-	
-	private Bounds _topWall;
-	private Bounds _bottomWall;
-	private Bounds _leftWall;
-	private Bounds _rightWall;
 	
 	private int _numLives;
 
@@ -45,10 +41,6 @@ public class GameImpl extends Pane implements Game {
 	 */
 	public GameImpl () {
 		setStyle("-fx-background-color: white;");
-		_topWall = new Rectangle(-0.7,0, WIDTH, 0).getBoundsInLocal();
-		_bottomWall = new Rectangle(0, HEIGHT, WIDTH, HEIGHT+0.7).getBoundsInLocal();
-		_leftWall = new Rectangle(0, 0, 0.3, HEIGHT).getBoundsInLocal();
-		_rightWall = new Rectangle(WIDTH, 0, WIDTH+0.3, HEIGHT).getBoundsInLocal();
 		restartGame(GameState.NEW);
 	}
 
@@ -77,6 +69,7 @@ public class GameImpl extends Pane implements Game {
 		
 		_numLives = 5;
 		
+		_canMove = false;
 
 		// Add start message
 		final String message;
@@ -97,11 +90,16 @@ public class GameImpl extends Pane implements Game {
 			@Override
 			public void handle (MouseEvent e) {
 				GameImpl.this.setOnMouseClicked(null);
-
+				_canMove = true;
 				// As soon as the mouse is clicked, remove the startLabel from the game board
 				getChildren().remove(startLabel);
 				run();
 			}
+		});
+		setOnMouseMoved(new EventHandler<MouseEvent> () {
+			public void handle(MouseEvent e) {
+				if(_canMove) _paddle.moveTo(e.getSceneX(), e.getSceneY());
+			}	
 		});
 	}
 
@@ -122,13 +120,6 @@ public class GameImpl extends Pane implements Game {
 						// the user won or lost the game.
 						restartGame(state);
 					}
-					else {
-						setOnMouseMoved(new EventHandler<MouseEvent> () {
-							public void handle(MouseEvent e) {
-								_paddle.moveTo(e.getSceneX(), e.getSceneY());
-							}	
-						});
-					}
 				}
 				// Keep track of how much time actually transpired since the last clock-tick.
 				lastNanoTime = currentNanoTime;
@@ -143,17 +134,22 @@ public class GameImpl extends Pane implements Game {
 	 * @return the current game state
 	 */
 	public GameState runOneTimestep (long deltaNanoTime) {
-		_ball.updatePosition(deltaNanoTime);
-		if(_ball.getBoundingBox().intersects(_rightWall) || _ball.getBoundingBox().intersects(_leftWall)) {
+		if(_ball.getX()-Ball.BALL_RADIUS < 0) {
 			_ball.negateX();
 		}
-		else if(_ball.getBoundingBox().intersects(_topWall)) _ball.negateY();
-		else if (_ball.getBoundingBox().intersects(_bottomWall)) {
+		else if (_ball.getX()+Ball.BALL_RADIUS > WIDTH) _ball.negateX();
+		else if (_ball.getY()-Ball.BALL_RADIUS < 0) _ball.negateY();
+		else if (_ball.getY()+Ball.BALL_RADIUS > HEIGHT) {
 			_ball.negateY();
 			_numLives--;
 		}
-		if(_ball.getBoundingBox().intersects(_paddle.getRectangle().getBoundsInLocal())) {
+		else if (_ball.getBoundingBox().intersects(_paddle.getRectangle().getBoundsInParent())) {
 			_ball.negateY();
+		}
+		_ball.updatePosition(deltaNanoTime);
+		if(_numLives <= 0) {
+			restartGame(GameState.LOST);
+			return GameState.LOST;
 		}
 		return GameState.ACTIVE;
 	}

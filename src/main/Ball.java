@@ -1,5 +1,6 @@
 package main;
 
+import javafx.geometry.Bounds;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -35,10 +36,9 @@ public class Ball {
 		return circle;
 	}
 	
-	public Rectangle getBoundingBox() {
-		return new Rectangle((int)(x-BALL_RADIUS),(int)(y-BALL_RADIUS),BALL_RADIUS*2,BALL_RADIUS*2);
+	public Bounds getBoundingBox() {
+		return new Rectangle(x-BALL_RADIUS, y-BALL_RADIUS, BALL_RADIUS*2, BALL_RADIUS*2).getBoundsInParent();
 	}
-
 	/**
 	 * Constructs a new Ball object at the centroid of the game board
 	 * with a default velocity that points down and right.
@@ -65,23 +65,33 @@ public class Ball {
 		final double dy = vy * deltaNanoTime;
 		x += dx;
 		y += dy;
-
+		
 		circle.setTranslateX(x - (circle.getLayoutX() + BALL_RADIUS));
 		circle.setTranslateY(y - (circle.getLayoutY() + BALL_RADIUS));
 	}
 	
 	public void negateX() {
 		vx*=-1;
-		x+=(vx*2);
+		x+=Math.signum(vx);
 	}
 	
 	public void negateY() {
 		vy*=-1;
-		y+=(vy*2);
+		y+=Math.signum(vy);
 	}
 	
 	public void increaseSpeed() {
 		vx*=1.05;
 		vy*=1.05;
 	}
+	
+	public double getX() {
+		return x;
+	}
+	
+	public double getY() {
+		return y;
+	}
 }
+
+
