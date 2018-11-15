@@ -1,10 +1,13 @@
 package main;
 
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Label;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.MouseEvent;
 import javafx.event.*;
+import javafx.geometry.Bounds;
+
 import java.util.*;
 
 public class GameImpl extends Pane implements Game {
@@ -26,15 +29,26 @@ public class GameImpl extends Pane implements Game {
 	public static final int HEIGHT = 600;
 
 	// Instance variables
-	private Ball ball;
-	private Paddle paddle;
+	private Ball _ball;
+	private Paddle _paddle;
+	private List<Animal> _enemies;
+	
+	private Bounds _topWall;
+	private Bounds _bottomWall;
+	private Bounds _leftWall;
+	private Bounds _rightWall;
+	
+	private int _numLives;
 
 	/**
 	 * Constructs a new GameImpl.
 	 */
 	public GameImpl () {
 		setStyle("-fx-background-color: white;");
-
+		_topWall = new Rectangle(-0.7,0, WIDTH, 0).getBoundsInLocal();
+		_bottomWall = new Rectangle(0, HEIGHT, WIDTH, HEIGHT+0.7).getBoundsInLocal();
+		_leftWall = new Rectangle(0, 0, 0.3, HEIGHT).getBoundsInLocal();
+		_rightWall = new Rectangle(WIDTH, 0, WIDTH+0.3, HEIGHT).getBoundsInLocal();
 		restartGame(GameState.NEW);
 	}
 
@@ -50,14 +64,19 @@ public class GameImpl extends Pane implements Game {
 		getChildren().clear();  // remove all components from the game
 
 		// Create and add ball
-		ball = new Ball();
-		getChildren().add(ball.getCircle());  // Add the ball to the game board
+		_ball = new Ball();
+		getChildren().add(_ball.getCircle());  // Add the ball to the game board
 
 		// Create and add animals ...
 
 		// Create and add paddle
-		paddle = new Paddle();
-		getChildren().add(paddle.getRectangle());  // Add the paddle to the game board
+		_paddle = new Paddle();
+		getChildren().add(_paddle.getRectangle());  // Add the paddle to the game board
+		
+		_enemies = new ArrayList<Animal>();
+		
+		_numLives = 5;
+		
 
 		// Add start message
 		final String message;
@@ -106,7 +125,7 @@ public class GameImpl extends Pane implements Game {
 					else {
 						setOnMouseMoved(new EventHandler<MouseEvent> () {
 							public void handle(MouseEvent e) {
-								paddle.moveTo(e.getSceneX(), e.getSceneY());
+								_paddle.moveTo(e.getSceneX(), e.getSceneY());
 							}	
 						});
 					}
@@ -124,7 +143,18 @@ public class GameImpl extends Pane implements Game {
 	 * @return the current game state
 	 */
 	public GameState runOneTimestep (long deltaNanoTime) {
-		ball.updatePosition(deltaNanoTime);
+		_ball.updatePosition(deltaNanoTime);
+		if(_ball.getBoundingBox().intersects(_rightWall) || _ball.getBoundingBox().intersects(_leftWall)) {
+			_ball.negateX();
+		}
+		else if(_ball.getBoundingBox().intersects(_topWall)) _ball.negateY();
+		else if (_ball.getBoundingBox().intersects(_bottomWall)) {
+			_ball.negateY();
+			_numLives--;
+		}
+		if(_ball.getBoundingBox().intersects(_paddle.getRectangle().getBoundsInLocal())) {
+			_ball.negateY();
+		}
 		return GameState.ACTIVE;
 	}
 }

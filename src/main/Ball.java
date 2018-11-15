@@ -1,8 +1,8 @@
 package main;
 
-import java.awt.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Class that implements a ball with a position and velocity.
@@ -72,9 +72,16 @@ public class Ball {
 	
 	public void negateX() {
 		vx*=-1;
+		x+=(vx*2);
 	}
 	
 	public void negateY() {
 		vy*=-1;
+		y+=(vy*2);
+	}
+	
+	public void increaseSpeed() {
+		vx*=1.05;
+		vy*=1.05;
 	}
 }
