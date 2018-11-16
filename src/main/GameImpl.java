@@ -168,10 +168,10 @@ public class GameImpl extends Pane implements Game {
 	
 	private void spawnAnimals() {
 		List<String> imageFilePaths = new ArrayList<String>();
-		imageFilePaths.add("goat.jpg");
-		imageFilePaths.add("duck.jpg");
-		imageFilePaths.add("horse.jpg");
+		imageFilePaths.add("car.jpg");
 		imageFilePaths.add("gregor.jpg");
+		imageFilePaths.add("cow.jpg");
+		imageFilePaths.add("thunk.jpg");
 		
 		List<String> audioFilePaths = new ArrayList<String>();
 		audioFilePaths.add("bleat.wav");
@@ -181,8 +181,7 @@ public class GameImpl extends Pane implements Game {
 		
 		for(int y = 50; y <= 245; y+=65) {
 			for(int x = 50; x <= 350; x+=100) {
-				int index = (int) (Math.random()*4);
-				System.out.println(audioFilePaths.get(index));
+				int index = (int) (Math.random()*imageFilePaths.size());
 				_enemies.add(new Animal(audioFilePaths.get(index), imageFilePaths.get(index), x,y));
 			}
 		}
