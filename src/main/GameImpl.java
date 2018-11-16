@@ -67,8 +67,7 @@ public class GameImpl extends Pane implements Game {
 		getChildren().add(_paddle.getRectangle());  // Add the paddle to the game board
 		
 		_enemies = new ArrayList<Animal>();
-		_enemies.add(new Animal(new Image(getClass().getResourceAsStream("icons//goat.jpg")), 50, 50));
-		getChildren().add(_enemies.get(0).getImage());
+		spawnAnimals();
 		
 		_numLives = 5;
 		
@@ -149,6 +148,7 @@ public class GameImpl extends Pane implements Game {
 		else if (_ball.getBoundingBox().intersects(_paddle.getRectangle().getBoundsInParent())) {
 			_ball.negateY();
 		}
+		if(_enemies.size() == 0) return GameState.WON;
 		for(int i = 0; i < _enemies.size(); i++) {
 			if(!_enemies.get(i).hasCollided(_ball).equals("")) {
 				_ball.increaseSpeed();
@@ -164,5 +164,30 @@ public class GameImpl extends Pane implements Game {
 		}
 		
 		return GameState.ACTIVE;
+	}
+	
+	private void spawnAnimals() {
+		List<String> imageFilePaths = new ArrayList<String>();
+		imageFilePaths.add("goat.jpg");
+		imageFilePaths.add("duck.jpg");
+		imageFilePaths.add("horse.jpg");
+		imageFilePaths.add("gregor.jpg");
+		
+		List<String> audioFilePaths = new ArrayList<String>();
+		audioFilePaths.add("bleat.wav");
+		audioFilePaths.add("quack.wav");
+		audioFilePaths.add("whinny.wav");
+		audioFilePaths.add("boing.wav");
+		
+		for(int y = 50; y <= 245; y+=65) {
+			for(int x = 50; x <= 350; x+=100) {
+				int index = (int) (Math.random()*4);
+				System.out.println(audioFilePaths.get(index));
+				_enemies.add(new Animal(audioFilePaths.get(index), imageFilePaths.get(index), x,y));
+			}
+		}
+		for(int i = 0; i < _enemies.size(); i++) {
+			getChildren().add(_enemies.get(i).getImage());
+		}
 	}
 }

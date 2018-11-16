@@ -81,10 +81,10 @@ public class Ball {
 	}
 	
 	public void increaseSpeed() {
-		vx*=1.2;
-		vy*=1.2;
+		vx*=1.05;
+		vy*=1.05;
 	}
-	
+
 	public double getX() {
 		return x;
 	}
