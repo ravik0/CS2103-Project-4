@@ -58,13 +58,13 @@ public class GameImpl extends Pane implements Game {
 
 		// Create and add ball
 		_ball = new Ball();
-		getChildren().add(_ball.getCircle());  // Add the ball to the game board
+		getChildren().add(_ball.getImage());  // Add the ball to the game board
 
 		// Create and add animals ...
 
 		// Create and add paddle
 		_paddle = new Paddle();
-		getChildren().add(_paddle.getRectangle());  // Add the paddle to the game board
+		getChildren().add(_paddle.getImage());  // Add the paddle to the game board
 		
 		_enemies = new ArrayList<Animal>();
 		spawnAnimals();

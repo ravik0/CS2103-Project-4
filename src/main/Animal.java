@@ -24,7 +24,8 @@ public class Animal {
 	}
 	
 	public Animal(String audioClip, String img, double posX, double posY) {
-		_deathSound = new AudioClip(getClass().getClassLoader().getResource(audioClip).toString());
+		//_deathSound = new AudioClip(getClass().getClassLoader().getResource(audioClip).toString());
+		_deathSound = null;
 		Image image = new Image(getClass().getResourceAsStream(img));
 		_image = new Label("", new ImageView(image));
 		_x = posX;
@@ -45,22 +46,22 @@ public class Animal {
 		Rectangle rightEdge = new Rectangle((int)b.getMaxX(), (int)b.getMinY(), 2, (int)b.getHeight());
 		if(ball.getBoundingBox().intersects(topEdge.getBoundsInLocal())) {
 			ball.negateY();
-			_deathSound.play();
+			//_deathSound.play();
 			return "top";
 		}
 		if(ball.getBoundingBox().intersects(bottomEdge.getBoundsInLocal())) {
 			ball.negateY();
-			_deathSound.play();
+			//_deathSound.play();
 			return "bottom";
 		}
 		if(ball.getBoundingBox().intersects(leftEdge.getBoundsInLocal())) {
 			ball.negateX();
-			_deathSound.play();
+			//_deathSound.play();
 			return "left";
 		}
 		if(ball.getBoundingBox().intersects(rightEdge.getBoundsInLocal())) {
 			ball.negateX();
-			_deathSound.play();
+			//_deathSound.play();
 			return "right";
 		}
 		return "";

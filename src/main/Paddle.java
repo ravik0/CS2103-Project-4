@@ -1,6 +1,10 @@
 package main;
 
 import java.awt.*;
+
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -26,6 +30,8 @@ class Paddle {
 	 * The maximum position (specified as a fraction of the game height) of center of the paddle.
 	 */
 	public static final double MAX_Y_LOCATION_FRAC = 0.9;
+	
+	final private Label _image;
 
 	// Instance variables
 	private Rectangle rectangle;
@@ -56,6 +62,11 @@ class Paddle {
 		rectangle.setLayoutY(y-PADDLE_HEIGHT/2);
 		rectangle.setStroke(Color.GREEN);
 		rectangle.setFill(Color.GREEN);
+		
+		Image image = new Image(getClass().getResourceAsStream("paddle.jpg"));
+		_image = new Label("", new ImageView(image));
+		_image.setLayoutX(getX() - image.getWidth()/2);
+		_image.setLayoutY(getY() - image.getHeight()/2);
 	}
 
 	/**
@@ -63,6 +74,10 @@ class Paddle {
 	 */
 	public Rectangle getRectangle () {
 		return rectangle;
+	}
+	
+	public Label getImage() {
+		return _image;
 	}
 
 	/**
@@ -88,6 +103,8 @@ class Paddle {
 
 		rectangle.setTranslateX(newX - (rectangle.getLayoutX() + PADDLE_WIDTH/2));
 		rectangle.setTranslateY(newY - (rectangle.getLayoutY() + PADDLE_HEIGHT/2));
+		_image.setLayoutX(getX() - _image.getWidth()/2);
+		_image.setLayoutY(getY() - _image.getHeight()/2);
 	}
 	
 }

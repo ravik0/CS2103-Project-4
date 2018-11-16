@@ -1,6 +1,9 @@
 package main;
 
 import javafx.geometry.Bounds;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -28,12 +31,17 @@ public class Ball {
 	private double x, y;
 	private double vx, vy;
 	private Circle circle;
+	final private Label _image;
 
 	/**
 	 * @return the Circle object that represents the ball on the game board.
 	 */
 	public Circle getCircle () {
 		return circle;
+	}
+	
+	public Label getImage() {
+		return _image;
 	}
 	
 	public Bounds getBoundingBox() {
@@ -53,6 +61,11 @@ public class Ball {
 		circle.setLayoutX(x - BALL_RADIUS);
 		circle.setLayoutY(y - BALL_RADIUS);
 		circle.setFill(Color.BLACK);
+		
+		Image image = new Image(getClass().getResourceAsStream("ball.jpg"));
+		_image = new Label("", new ImageView(image));
+		_image.setLayoutX(getX() - image.getWidth()/2);
+		_image.setLayoutY(getY() - image.getHeight()/2);
 	}
 
 	/**
@@ -68,6 +81,8 @@ public class Ball {
 		
 		circle.setTranslateX(x - (circle.getLayoutX() + BALL_RADIUS));
 		circle.setTranslateY(y - (circle.getLayoutY() + BALL_RADIUS));
+		_image.setLayoutX(getX() - _image.getWidth()/2);
+		_image.setLayoutY(getY() - _image.getHeight()/2);
 	}
 	
 	public void negateX() {
