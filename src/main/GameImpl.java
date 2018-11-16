@@ -3,6 +3,7 @@ package main;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.MouseEvent;
 import javafx.event.*;
@@ -66,6 +67,8 @@ public class GameImpl extends Pane implements Game {
 		getChildren().add(_paddle.getRectangle());  // Add the paddle to the game board
 		
 		_enemies = new ArrayList<Animal>();
+		_enemies.add(new Animal(new Image(getClass().getResourceAsStream("icons//goat.jpg")), 50, 50));
+		getChildren().add(_enemies.get(0).getImage());
 		
 		_numLives = 5;
 		
@@ -146,11 +149,20 @@ public class GameImpl extends Pane implements Game {
 		else if (_ball.getBoundingBox().intersects(_paddle.getRectangle().getBoundsInParent())) {
 			_ball.negateY();
 		}
+		for(int i = 0; i < _enemies.size(); i++) {
+			if(!_enemies.get(i).hasCollided(_ball).equals("")) {
+				_ball.increaseSpeed();
+				getChildren().remove(_enemies.get(i).getImage());
+				_enemies.remove(i);
+				i--;
+			}
+		}
 		_ball.updatePosition(deltaNanoTime);
 		if(_numLives <= 0) {
 			restartGame(GameState.LOST);
 			return GameState.LOST;
 		}
+		
 		return GameState.ACTIVE;
 	}
 }
