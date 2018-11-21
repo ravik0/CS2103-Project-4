@@ -28,6 +28,11 @@ public class GameImpl extends Pane implements Game {
 	 * The height of the game board.
 	 */
 	public static final int HEIGHT = 600;
+	
+	private Bounds _topWall;
+	private Bounds _bottomWall;
+	private Bounds _leftWall;
+	private Bounds _rightWall;
 
 	// Instance variables
 	private Ball _ball;
@@ -42,6 +47,10 @@ public class GameImpl extends Pane implements Game {
 	 */
 	public GameImpl () {
 		setStyle("-fx-background-color: white;");
+		_topWall = new Rectangle(0 ,-0.5, WIDTH, 0).getBoundsInLocal();
+		_bottomWall = new Rectangle(0, HEIGHT, WIDTH, HEIGHT+0.5).getBoundsInLocal();
+		_leftWall = new Rectangle(-0.5, 0, 0, HEIGHT).getBoundsInLocal();
+		_rightWall = new Rectangle(WIDTH, 0, WIDTH+0.5, HEIGHT).getBoundsInLocal();
 		restartGame(GameState.NEW);
 	}
 
@@ -136,21 +145,21 @@ public class GameImpl extends Pane implements Game {
 	 * @return the current game state
 	 */
 	public GameState runOneTimestep (long deltaNanoTime) {
-		if(_ball.getX()-Ball.BALL_RADIUS < 0) {
+		if(_ball.hasCollided(_leftWall)) {
 			_ball.negateX();
 		}
-		else if (_ball.getX()+Ball.BALL_RADIUS > WIDTH) _ball.negateX();
-		else if (_ball.getY()-Ball.BALL_RADIUS < 0) _ball.negateY();
-		else if (_ball.getY()+Ball.BALL_RADIUS > HEIGHT) {
+		else if (_ball.hasCollided(_rightWall)) _ball.negateX();
+		else if (_ball.hasCollided(_topWall)) _ball.negateY();
+		else if (_ball.hasCollided(_bottomWall)) {
 			_ball.negateY();
 			_numLives--;
 		}
-		else if (_ball.getBoundingBox().intersects(_paddle.getRectangle().getBoundsInParent())) {
+		else if (_ball.hasCollided(_paddle.getBoundingBox())) {
 			_ball.negateY();
 		}
 		if(_enemies.size() == 0) return GameState.WON;
 		for(int i = 0; i < _enemies.size(); i++) {
-			if(!_enemies.get(i).hasCollided(_ball).equals("")) {
+			if(_enemies.get(i).hasCollided(_ball)) {
 				_ball.increaseSpeed();
 				getChildren().remove(_enemies.get(i).getImage());
 				_enemies.remove(i);

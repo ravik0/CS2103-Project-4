@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * Class that implements a ball with a position and velocity.
  */
-public class Ball {
+public class Ball extends GameObject {
 	// Constants
 	/**
 	 * The radius of the ball.
@@ -64,8 +64,8 @@ public class Ball {
 		
 		Image image = new Image(getClass().getResourceAsStream("ball.jpg"));
 		_image = new Label("", new ImageView(image));
-		_image.setLayoutX(getX() - image.getWidth()/2);
-		_image.setLayoutY(getY() - image.getHeight()/2);
+		_image.setLayoutX(x - image.getWidth()/2);
+		_image.setLayoutY(y - image.getHeight()/2);
 	}
 
 	/**
@@ -81,31 +81,27 @@ public class Ball {
 		
 		circle.setTranslateX(x - (circle.getLayoutX() + BALL_RADIUS));
 		circle.setTranslateY(y - (circle.getLayoutY() + BALL_RADIUS));
-		_image.setLayoutX(getX() - _image.getWidth()/2);
-		_image.setLayoutY(getY() - _image.getHeight()/2);
+		_image.setLayoutX(x - _image.getWidth()/2);
+		_image.setLayoutY(y - _image.getHeight()/2);
 	}
 	
 	public void negateX() {
 		vx*=-1;
-		x+=Math.signum(vx);
+		x+=Math.signum(vx)*2;
 	}
 	
 	public void negateY() {
 		vy*=-1;
-		y+=Math.signum(vy);
+		y+=Math.signum(vy)*2;
 	}
 	
 	public void increaseSpeed() {
 		vx*=1.05;
 		vy*=1.05;
 	}
-
-	public double getX() {
-		return x;
-	}
 	
-	public double getY() {
-		return y;
+	public boolean hasCollided(Bounds bound) {
+		return super.hasCollided(getBoundingBox(), bound);
 	}
 }
 

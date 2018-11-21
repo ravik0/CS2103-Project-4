@@ -2,13 +2,14 @@ package main;
 
 import java.awt.*;
 
+import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-class Paddle {
+public class Paddle {
 	// Constants
 	/**
 	 * The width of the paddle.
@@ -50,6 +51,9 @@ class Paddle {
 		return rectangle.getLayoutY() + rectangle.getTranslateY() + PADDLE_HEIGHT/2;
 	}
 
+	public Bounds getBoundingBox() {
+		return getRectangle().getBoundsInParent();
+	}
 	/**
 	 * Constructs a new Paddle whose vertical center is at INITIAL_Y_LOCATION_FRAC * GameImpl.HEIGHT.
 	 */

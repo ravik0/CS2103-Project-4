@@ -12,7 +12,7 @@ import javafx.scene.shape.Rectangle;
  * @author Ravi
  *
  */
-public class Animal {
+public class Animal extends GameObject {
 	final private AudioClip _deathSound;
 	final private Label _image;
 	final private double _x, _y; //center of image
@@ -24,8 +24,8 @@ public class Animal {
 	}
 	
 	public Animal(String audioClip, String img, double posX, double posY) {
-		//_deathSound = new AudioClip(getClass().getClassLoader().getResource(audioClip).toString());
-		_deathSound = null;
+		_deathSound = new AudioClip(getClass().getClassLoader().getResource(audioClip).toString());
+		//_deathSound = null;
 		Image image = new Image(getClass().getResourceAsStream(img));
 		_image = new Label("", new ImageView(image));
 		_x = posX;
@@ -38,32 +38,33 @@ public class Animal {
 		return _image;
 	}
 	
-	public String hasCollided(Ball ball) {
+	public boolean hasCollided(Ball ball) {
 		Bounds b = getBoundingBox();
-		Rectangle topEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), (int)b.getWidth(), 2);
-		Rectangle bottomEdge = new Rectangle((int)b.getMinX(), (int)b.getMaxY(), (int)b.getWidth(), 2);
-		Rectangle leftEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), 2, (int)b.getHeight());
-		Rectangle rightEdge = new Rectangle((int)b.getMaxX(), (int)b.getMinY(), 2, (int)b.getHeight());
-		if(ball.getBoundingBox().intersects(topEdge.getBoundsInLocal())) {
+		Bounds topEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), (int)b.getWidth(), 2).getBoundsInLocal();
+		Bounds bottomEdge = new Rectangle((int)b.getMinX(), (int)b.getMaxY(), (int)b.getWidth(), 2).getBoundsInLocal();
+		Bounds leftEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), 2, (int)b.getHeight()).getBoundsInLocal();
+		Bounds rightEdge = new Rectangle((int)b.getMaxX(), (int)b.getMinY(), 2, (int)b.getHeight()).getBoundsInLocal();
+		Bounds theBall = ball.getBoundingBox();
+		if(super.hasCollided(theBall, topEdge)) {
 			ball.negateY();
 			//_deathSound.play();
-			return "top";
+			return true;
 		}
-		if(ball.getBoundingBox().intersects(bottomEdge.getBoundsInLocal())) {
+		else if(super.hasCollided(theBall, bottomEdge)) {
 			ball.negateY();
 			//_deathSound.play();
-			return "bottom";
+			return true;
 		}
-		if(ball.getBoundingBox().intersects(leftEdge.getBoundsInLocal())) {
+		else if(super.hasCollided(theBall, leftEdge)) {
 			ball.negateX();
 			//_deathSound.play();
-			return "left";
+			return true;
 		}
-		if(ball.getBoundingBox().intersects(rightEdge.getBoundsInLocal())) {
+		else if(super.hasCollided(theBall, rightEdge)) {
 			ball.negateX();
 			//_deathSound.play();
-			return "right";
+			return true;
 		}
-		return "";
+		return false;
 	}
 }
