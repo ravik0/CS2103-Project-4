@@ -183,10 +183,10 @@ public class GameImpl extends Pane implements Game {
 		imageFilePaths.add("thunk.jpg");
 		
 		List<String> audioFilePaths = new ArrayList<String>();
-		audioFilePaths.add("bleat.wav");
-		audioFilePaths.add("quack.wav");
-		audioFilePaths.add("whinny.wav");
-		audioFilePaths.add("boing.wav");
+		audioFilePaths.add("C:/Users/Ravi/Documents/WPICS/CS2103-Project-4/src/main/bleat.wav");
+		audioFilePaths.add("C:/Users/Ravi/Documents/WPICS/CS2103-Project-4/src/main/bleat.wav");
+		audioFilePaths.add("C:/Users/Ravi/Documents/WPICS/CS2103-Project-4/src/main/bleat.wav");
+		audioFilePaths.add("C:/Users/Ravi/Documents/WPICS/CS2103-Project-4/src/main/bleat.wav");
 		
 		for(int y = 50; y <= 245; y+=65) {
 			for(int x = 50; x <= 350; x+=100) {

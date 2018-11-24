@@ -24,8 +24,8 @@ public class Animal extends GameObject {
 	}
 	
 	public Animal(String audioClip, String img, double posX, double posY) {
-		_deathSound = new AudioClip(getClass().getClassLoader().getResource(audioClip).toString());
-		//_deathSound = null;
+		//_deathSound = new AudioClip(getClass().getClassLoader().getResource(audioClip).toString());
+		_deathSound = null;
 		Image image = new Image(getClass().getResourceAsStream(img));
 		_image = new Label("", new ImageView(image));
 		_x = posX;
