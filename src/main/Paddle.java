@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Paddle {
+public class Paddle extends GameObject{
 	// Constants
 	/**
 	 * The width of the paddle.

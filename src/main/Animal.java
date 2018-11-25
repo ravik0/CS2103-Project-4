@@ -16,6 +16,7 @@ public class Animal extends GameObject {
 	final private AudioClip _deathSound;
 	final private Label _image;
 	final private double _x, _y; //center of image
+	final private Bounds topEdge, bottomEdge, leftEdge, rightEdge;
 	
 	public Bounds getBoundingBox() {
 		double width = _image.getWidth();
@@ -32,6 +33,11 @@ public class Animal extends GameObject {
 		_y = posY; 
 		_image.setLayoutX(_x - image.getWidth()/2);
 		_image.setLayoutY(_y - image.getHeight()/2);
+		Bounds b = getBoundingBox();
+		topEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), (int)b.getWidth(), 2).getBoundsInLocal();
+		bottomEdge = new Rectangle((int)b.getMinX(), (int)b.getMaxY(), (int)b.getWidth(), 2).getBoundsInLocal();
+		leftEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), 2, (int)b.getHeight()).getBoundsInLocal();
+		rightEdge = new Rectangle((int)b.getMaxX(), (int)b.getMinY(), 2, (int)b.getHeight()).getBoundsInLocal();
 	}
 	
 	public Label getImage() {
@@ -40,10 +46,6 @@ public class Animal extends GameObject {
 	
 	public boolean hasCollided(Ball ball) {
 		Bounds b = getBoundingBox();
-		Bounds topEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), (int)b.getWidth(), 2).getBoundsInLocal();
-		Bounds bottomEdge = new Rectangle((int)b.getMinX(), (int)b.getMaxY(), (int)b.getWidth(), 2).getBoundsInLocal();
-		Bounds leftEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), 2, (int)b.getHeight()).getBoundsInLocal();
-		Bounds rightEdge = new Rectangle((int)b.getMaxX(), (int)b.getMinY(), 2, (int)b.getHeight()).getBoundsInLocal();
 		Bounds theBall = ball.getBoundingBox();
 		if(super.hasCollided(theBall, topEdge)) {
 			ball.negateY();
