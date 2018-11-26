@@ -23,6 +23,13 @@ public class Animal extends GameObject {
 		return new Rectangle((int)(_x-width/2),(int)(_y-height/2), (int)width, (int)height).getBoundsInLocal();
 	}
 	
+	/**
+	 * Creates a new Animal instance
+	 * @param audioClip Useless for now, supposed to be the audio clip file path
+	 * @param img The image file path that will display
+	 * @param posX The X position of the image
+	 * @param posY The Y position of the image
+	 */
 	public Animal(String audioClip, String img, double posX, double posY) {
 		//_deathSound = new AudioClip(getClass().getClassLoader().getResource(audioClip).toString());
 		_deathSound = null;
@@ -38,6 +45,11 @@ public class Animal extends GameObject {
 		return _image;
 	}
 	
+	/**
+	 * Checks to see if this image has collided with the ball.
+	 * @param ball the ball that the image may be colliding with
+	 * @return true if collided, false otherwise
+	 */
 	public boolean hasCollided(Ball ball) {
 		Bounds b = getBoundingBox();
 		Bounds topEdge = new Rectangle((int)b.getMinX(), (int)b.getMinY(), (int)b.getWidth(), 2).getBoundsInLocal();

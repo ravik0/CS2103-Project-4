@@ -25,6 +25,9 @@ public class Ball extends GameObject {
 	 * The initial velocity of the ball in the y direction.
 	 */
 	public static final double INITIAL_VY = 1e-7;
+	
+	private final int STEP_AWAY = 2;
+	private final double VELOCITY_INCREASE = 1.07;
 
 	// Instance variables
 	// (x,y) is the position of the center of the ball.
@@ -85,21 +88,35 @@ public class Ball extends GameObject {
 		_image.setLayoutY(y - _image.getHeight()/2);
 	}
 	
+	/**
+	 * Changes the x velocity of the ball
+	 */
 	public void negateX() {
 		vx*=-1;
-		x+=Math.signum(vx)*2;
+		x+=Math.signum(vx)*STEP_AWAY; //this moves it STEP_AWAY steps away in whatever direction it is negating, to make sure it doesn't get stuck within the wall
 	}
 	
+	/**
+	 * Changes the y velocity of the ball
+	 */
 	public void negateY() {
 		vy*=-1;
-		y+=Math.signum(vy)*2;
+		y+=Math.signum(vy)*STEP_AWAY;
 	}
 	
+	/**
+	 * Increases the speed of the ball
+	 */
 	public void increaseSpeed() {
-		vx*=1.05;
-		vy*=1.05;
+		vx*=VELOCITY_INCREASE;
+		vy*=VELOCITY_INCREASE;
 	}
 	
+	/**
+	 * Checks to see if the ball has collided with this bound
+	 * @param bound the bound that the ball may have collided with
+	 * @return true if collided, false otherwise
+	 */
 	public boolean hasCollided(Bounds bound) {
 		return super.hasCollided(getBoundingBox(), bound);
 	}
